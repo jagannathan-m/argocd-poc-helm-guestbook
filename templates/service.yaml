@@ -1,12 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "helm-guestbook.fullname" . }}
+  name: {{ include "getBaseName" . }}
   labels:
-    app: {{ template "helm-guestbook.name" . }}
-    chart: {{ template "helm-guestbook.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    app: {{ include "getBaseName" . }}
+    {{- include "getBasicLabels" . | indent 4 }}
+  annotations:
+    kong.athena.io/host: macroservice-clinicals.*
+    {{- if .Values.branchIdentifier }}
+    kong.athena.io/path: /{{ .Values.branchIdentifier }}
+    {{- end }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -15,5 +18,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: {{ template "helm-guestbook.name" . }}
+    app: {{ include "getBaseName" . }}
     release: {{ .Release.Name }}

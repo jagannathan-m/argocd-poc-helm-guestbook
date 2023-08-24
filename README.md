@@ -1,1 +1,1 @@
-# argocd-poc-helm-guestbook
+# poc-helm-guestbook

@@ -1,45 +1,39 @@
-# Default values for helm-guestbook.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+global:
+  k8sEnv: poc-dev1
 
-replicaCount: 1
+k8sEnvConfig:
+  poc-prod1:
+    replicaCount: 5
+    affinityKey: Location
+    affinityValue: us-east-1
+    logicalEnv: prod
 
-image:
-  repository: gcr.io/heptio-images/ks-guestbook-demo
-  tag: 0.1
-  pullPolicy: IfNotPresent
+  poc-prod2:
+    replicaCount: 3
+    affinityKey: Location
+    affinityValue: us-west-2
+    logicalEnv: prod
+
+  poc-qad1:
+    replicaCount: 2
+    affinityKey: Location
+    affinityValue: us-east-1
+    logicalEnv: qad
+
+  poc-dev1:
+    replicaCount: 1
+    affinityKey: Location
+    affinityValue: us-east-1
+    logicalEnv: dev
 
 service:
   type: ClusterIP
   port: 80
 
-ingress:
-  enabled: false
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  path: /
-  hosts:
-    - chart-example.local
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+branchIdentifier:
+appName: macroservice
+applicationImage: gcr.io/heptio-images/ks-guestbook-demo:0.1
 
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #  cpu: 100m
-  #  memory: 128Mi
-  # requests:
-  #  cpu: 100m
-  #  memory: 128Mi
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
+# ENV=poc-qad1
+# BRANCH_ID=zxc001
+# helm template . --namespace=${ENV}-platform --set global.k8sEnv=$ENV --set branchIdentifier=$BRANCH_ID
