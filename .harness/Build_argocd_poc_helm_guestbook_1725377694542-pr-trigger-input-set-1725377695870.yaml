@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_argocd_poc_helm_guestbook_1725377694542-pr-trigger-input-set
+  identifier: Build_argocd_poc_helm_guestbook_1725377694542prtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: default_project
+  pipeline:
+    identifier: Build_argocd_poc_helm_guestbook_1725377694542
+    properties:
+      ci:
+        codebase:
+          build:
+            type: PR
+            spec:
+              number: <+trigger.prNumber>
